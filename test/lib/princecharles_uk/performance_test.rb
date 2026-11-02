@@ -29,7 +29,7 @@ class PrincecharlesUk::PerformanceTest < Minitest::Test
   end
 
   def test_at_defaults_to_two_weeks_from_today
-    performances = PrincecharlesUk::Performance.stub(:today, FIXTURE_DAY) { PrincecharlesUk::Performance.at('PRILON') }
+    performances = Cinebase::London.stub(:today, FIXTURE_DAY) { PrincecharlesUk::Performance.at('PRILON') }
 
     assert_equal 16, performances.count
     assert_operator performances.last.showing_on, :<=, FIXTURE_DAY + 13

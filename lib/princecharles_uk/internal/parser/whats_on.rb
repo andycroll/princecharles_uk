@@ -21,7 +21,6 @@ module PrincecharlesUk
         TIME = %r{<span class="time">\s*(\d{1,2}):(\d{2})\s*([ap]m)\s*</span>}i
         # Sold out showtimes have no link
         BOOKING = %r{href="(https://princecharlescinema\.com/[\w-]+/booknow/\d+)/?"}
-        TIME_ZONE = 'Europe/London'
         HOURS_TO_NOON = 12
 
         # @param [String] html the what's on page
@@ -88,7 +87,7 @@ module PrincecharlesUk
           hour = hour.to_i % HOURS_TO_NOON
           hour += HOURS_TO_NOON if meridiem.casecmp?('pm')
           local = Time.utc(date.year, date.month, date.day, hour, minute.to_i)
-          TZInfo::Timezone.get(TIME_ZONE).local_to_utc(local) { |periods| periods.first }.utc
+          Cinebase::London.utc(local)
         end
       end
     end

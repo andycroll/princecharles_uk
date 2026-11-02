@@ -49,7 +49,6 @@ module PrincecharlesUk
     TITLE_YEAR = /[(\[](1[89]\d{2}|20\d{2})[)\]]\s*\z/
     # Listings give placeholder years to some events, e.g. 1878
     FIRST_FILM_YEAR = 1888
-    TIME_ZONE = 'Europe/London'.freeze
 
     # Performances within an inclusive range of showing dates, from one
     # request: the what's on page holds every advertised date.
@@ -59,7 +58,7 @@ module PrincecharlesUk
     # @return [Array<PrincecharlesUk::Performance>]
     def self.at(
       cinema_id,
-      from: today,
+      from: Cinebase::London.today,
       to: from + 13
     )
       raise ArgumentError, 'to must not precede from' if to < from
@@ -87,14 +86,9 @@ module PrincecharlesUk
     #   The kinds of screening (35mm, 70mm, q&a, sing_along, subtitled ...)
     #   @return <Array[String]>
 
-    def self.today
-      TZInfo::Timezone.get(TIME_ZONE).now.to_date
-    end
-    private_class_method :today
-
     def self.showings
       html = PrincecharlesUk::Internal::Website.new.whats_on
-      PrincecharlesUk::Internal::Parser::WhatsOn.new(html, today: today).showings
+      PrincecharlesUk::Internal::Parser::WhatsOn.new(html, today: Cinebase::London.today).showings
     end
     private_class_method :showings
 
