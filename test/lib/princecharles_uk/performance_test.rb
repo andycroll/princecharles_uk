@@ -105,6 +105,13 @@ class PrincecharlesUk::PerformanceTest < Minitest::Test
     assert_equal '3d', find('Mystery Movie').dimension
   end
 
+  def test_audience_labels_in_titles_are_variants
+    stub_request(:get, WHATS_ON).to_return(status: 200,
+                                           body: whats_on_html.sub('>Mystery Movie<', '>Relaxed Screening: Mystery Movie<'))
+
+    assert_equal %w(relaxed), find('Mystery Movie').variant
+  end
+
   def test_unknown_cinema_makes_no_request
     assert_empty PrincecharlesUk::Performance.at('ZZZ', from: FIXTURE_DAY, to: FIXTURE_DAY)
     assert_not_requested :get, WHATS_ON
