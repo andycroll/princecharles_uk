@@ -22,6 +22,7 @@ module PrincecharlesUk
     #   @option options [String] :film_name name of the film
     #   @option options [Integer] :film_year (nil) year of the film
     #   @option options [Time] :starting_at listed start time of the performance
+    #   @option options [String] :title (nil) raw title, for audience variants
 
     # Showtime tags and the variants they mean. HOH (hard of hearing)
     # screenings are subtitled. Others, such as '4k', '1-mem' (£1 member
@@ -101,6 +102,7 @@ module PrincecharlesUk
         film_name: PrincecharlesUk::Internal::TitleSanitizer.new(title).sanitized,
         film_year: film_year(showing),
         starting_at: showing.starting_at,
+        title: title,
         variant: variant(showing)
       }
     end
